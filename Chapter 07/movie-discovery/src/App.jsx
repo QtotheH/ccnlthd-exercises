@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import RootLayout from "./layouts/RootLayout.jsx";
+import Home from "./pages/Home.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import MovieDiscovery from "./pages/MovieDiscovery.jsx";
+import MovieDetail from "./pages/MovieDetail.jsx";
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+import { Routes, Route } from 'react-router'
+const App = () => {
+    return  (
+        <Routes>
+            {/* ROOT LAYOUT ROUTE: Layout route không có thuộc tính path */}
+            <Route element={<RootLayout />} >
+                {/* INDEX ROUTE: Route mặc định khi URL là "/" */}
+                <Route index element={<Home />} />
+                {/* BASIC ROUTE */}
+                <Route path="about" element={<AboutUs />} />
+                {/* ROUTE PREFIX: Route chỉ có path, không có element, thêm tiền tố vào đường dẫn của các route con của nó */}
+                <Route path="movies">
+                    <Route index element={<MovieDiscovery />} />
+                    {/* OPTIONAL SEGMENT - :category? là optional */}
+                    <Route path=":category?" element={<MovieDiscovery />} />
+                    {/* DYNAMIC SEGMENT - :movieId */}
+                    <Route path="detail/:movieId" element={<MovieDetail />} />
+                </Route>
+            </Route>
+        </Routes>
+    );
 }
 
 export default App
