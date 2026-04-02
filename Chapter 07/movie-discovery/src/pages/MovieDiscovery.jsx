@@ -30,7 +30,12 @@ const MovieDiscovery = () => {
             </div>
 
             <div>
-                <button className="back-to-home" onClick={() => navigate("/")}>Trở về HOME</button>
+                <button 
+                    className="back-to-home" 
+                    onClick={() => navigate("/")}
+                >
+                    Trở về HOME
+                </button>
             </div>
         </>
     )

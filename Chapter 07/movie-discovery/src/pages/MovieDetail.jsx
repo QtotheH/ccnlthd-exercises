@@ -27,7 +27,12 @@ const MovieDetail = () => {
 
                 <div>
                     {/* Chuyển hướng về trang Movie Discovery khi người dùng nhấn nút */}
-                    <button className="back-to-home" onClick={() => navigate("/movies")}>Trở về Movie Discovery</button>
+                    <button 
+                        className="back-to-home" 
+                        onClick={() => navigate("/movies")}
+                    >
+                        Trở về Movie Discovery
+                    </button>
                 </div>
             </>
         ) :
