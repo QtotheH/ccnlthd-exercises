@@ -1,15 +1,24 @@
 import { movieCategory } from "../MovieData.js";
 import {useNavigate, useParams} from "react-router";
+import { useMemo, useCallback } from "react";
 const MovieDetail = () => {
     // Dùng hook useParams để lấy giá trị Dynamic Segment 'movieId'
     const { movieId } = useParams();
 
     const navigate = useNavigate();
 
-    // Lấy thông tin phim dựa vào giá trị movieId
-    const movie = Object.values(movieCategory)
+    // useMemo: tra cứu phim chỉ chạy lại khi movieId thay đổi
+    const movie = useMemo(() => {
+        return Object.values(movieCategory)
             .flat()
             .find(m => m.id === Number(movieId));
+    }, [movieId]);
+
+    // useCallback: cache hàm điều hướng
+    const handleBackToDiscovery = useCallback(() => {
+        navigate("/movies");
+    }, [navigate]);
+
     return (
         // Nếu phim có tồn tại thì hiển thị thông tin phim
         movie !== undefined ? (
@@ -29,7 +38,7 @@ const MovieDetail = () => {
                     {/* Chuyển hướng về trang Movie Discovery khi người dùng nhấn nút */}
                     <button 
                         className="back-to-home" 
-                        onClick={() => navigate("/movies")}
+                        onClick={handleBackToDiscovery}
                     >
                         Trở về Movie Discovery
                     </button>

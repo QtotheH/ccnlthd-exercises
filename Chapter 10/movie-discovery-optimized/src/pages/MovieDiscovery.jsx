@@ -1,18 +1,25 @@
 import MovieCard from "./MovieCard.jsx";
 import {movieCategory} from "../MovieData.js";
+import {useMemo, useCallback} from 'react'
 
 import {Link, useNavigate, useParams} from "react-router";
 const MovieDiscovery = () => {
-    // Dùng hook useParams() đề lấy giá trị Optional Segment 'category' từ URL
     const { category } = useParams();
     const currentCategory = category || 'popular';
-    // Lấy danh sách phim theo category đã chọn
-    const movies = movieCategory[currentCategory] || movieCategory['popular'];
-    // Hook useNavigate cho phép điều hướng người dùng đến route khác thông qua hàm navigate
+    // useMemo: chỉ tính lại khi currentCategory thay đổi
+    const movies = useMemo(() => {
+        return movieCategory[currentCategory] || movieCategory["popular"];
+    }, [currentCategory]);
+
     const navigate = useNavigate();
+    // useCallback: hàm navigate được cache, không tạo mới mỗi render
+    const handleBackToHome = useCallback(() => {
+        navigate("/");
+    }, [navigate]);
+
     return (
         <>
-            <h1>Movie Discovery</h1>
+            <h1>Movie Discovery - Optimized</h1>
             <div className="button-link-group">
                 <Link to="/movies" className="button-link">Popular</Link>
                 <Link to="/movies/top-rated" className="button-link">Top Rated</Link>
@@ -30,9 +37,10 @@ const MovieDiscovery = () => {
             </div>
 
             <div>
+                {/* Truyền hàm handleBackToHome đã được cache */}
                 <button 
                     className="back-to-home" 
-                    onClick={() => navigate("/")}
+                    onClick={handleBackToHome}
                 >
                     Trở về HOME
                 </button>
